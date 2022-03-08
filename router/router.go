@@ -9,6 +9,12 @@ import (
 
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
+	if mode := gin.Mode(); mode == gin.TestMode {
+		router.LoadHTMLGlob("./../templates/*")
+	} else {
+		router.LoadHTMLGlob("templates/*")
+	}
+	router.Static("/statics","./statics")
 	//router.GET("/", func(context *gin.Context) {
 	//	context.String(http.StatusOK, "hello gin")
 	//})
@@ -22,7 +28,7 @@ func SetupRouter() *gin.Engine {
 
 	index := router.Group("/")
 	{
-		index.Any("", retHelloGinAndMethod)
+		index.Any("", handler.Index)
 	}
 
 	userRouter := router.Group("/user")
@@ -30,6 +36,7 @@ func SetupRouter() *gin.Engine {
 		userRouter.GET("/:name", handler.UserSave)  //从/{name}中获取
 		userRouter.GET("", handler.UserSaveByQuery) //user?name=abc
 	}
+
 	return router
 }
 
