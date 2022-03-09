@@ -26,6 +26,7 @@ func SetupRouter() *gin.Engine {
 		userRouter.GET("/:name", handler.UserSave)  //从/{name}中获取
 		userRouter.GET("", handler.UserSaveByQuery) //user?name=abc
 		userRouter.POST("/register", handler.UserRegister)
+		userRouter.POST("/login",handler.UserLogin)
 	}
 	return router
 }
