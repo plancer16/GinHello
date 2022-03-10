@@ -5,6 +5,8 @@ import (
 	"GinHello/middleware"
 	"GinHello/utils"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"net/http"
 )
 
@@ -21,6 +23,10 @@ func SetupRouter() *gin.Engine {
 	router.StaticFile("/favicon.ico", "./favicon.ico")
 	router.Static("/statics", "./statics")
 	router.StaticFS("/avatar", http.Dir(utils.RootPath()+"avatar/"))
+
+	//swagger文档路由
+	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json")
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	index := router.Group("/")
 	{
@@ -45,5 +51,6 @@ func SetupRouter() *gin.Engine {
 		articleRouter.GET("articles",handler.GetAll)
 		articleRouter.DELETE("/article/:id",handler.DeleteOne)
 	}
+
 	return router
 }

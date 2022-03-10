@@ -7,7 +7,15 @@ import (
 	"net/http"
 	"strconv"
 )
-
+// @Summary 提交新的文章内容
+// @Id 1
+// @Tags 文章
+// @version 1.0
+// @Accept application/x-json-stream
+// @Param article body model.Article true "文章"
+// @Success 200 object model.Result 成功后返回值
+// @Failure 409 object model.Result 添加失败
+// @Router /article [post]
 func Insert(context *gin.Context) {
 	article := model.Article{}
 	var id = -1 //没插入文章的标志位
@@ -19,7 +27,12 @@ func Insert(context *gin.Context) {
 	})
 	//gin.H表示json的map对
 }
-
+// @Summary 通过文章 id 获取单个文章内容
+// @version 1.0
+// @Accept application/x-json-stream
+// @Param id path int true "id"
+// @Success 200 object model.Result 成功后返回值
+// @Router /article/{id} [get]
 func GetOne(ctx *gin.Context) {
 	id := ctx.Param("id")
 	i, e := strconv.Atoi(id)
