@@ -36,5 +36,14 @@ func SetupRouter() *gin.Engine {
 		userRouter.GET("/profile/", middleware.Auth(), handler.UserProfile)
 		userRouter.POST("/update", middleware.Auth(), handler.UpdateUserProfile)
 	}
+
+	articleRouter := router.Group("")
+	{
+		//网址url只能是get，post、delete通过postman，post要构造请求体json
+		articleRouter.POST("/article",handler.Insert)
+		articleRouter.GET("/article/:id",handler.GetOne)
+		articleRouter.GET("articles",handler.GetAll)
+		articleRouter.DELETE("/article/:id",handler.DeleteOne)
+	}
 	return router
 }
