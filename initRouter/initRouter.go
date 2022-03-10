@@ -2,13 +2,17 @@ package initRouter
 
 import (
 	"GinHello/handler"
+	"GinHello/middleware"
 	"GinHello/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func SetupRouter() *gin.Engine {
-	router := gin.Default()
+	//router := gin.Default()
+	router := gin.New()
+	router.Use(middleware.Logger(), gin.Recovery()) //改了日志形式
+
 	if mode := gin.Mode(); mode == gin.TestMode {
 		router.LoadHTMLGlob("./../templates/*")
 	} else {
@@ -29,8 +33,8 @@ func SetupRouter() *gin.Engine {
 		userRouter.GET("", handler.UserSaveByQuery) //user?name=abc
 		userRouter.POST("/register", handler.UserRegister)
 		userRouter.POST("/login", handler.UserLogin)
-		userRouter.GET("/profile/", handler.UserProfile)
-		userRouter.POST("/update", handler.UpdateUserProfile)
+		userRouter.GET("/profile/", middleware.Auth(), handler.UserProfile)
+		userRouter.POST("/update", middleware.Auth(), handler.UpdateUserProfile)
 	}
 	return router
 }
