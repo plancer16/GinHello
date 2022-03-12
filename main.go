@@ -3,6 +3,7 @@ package main
 import (
 	_ "GinHello/docs"
 	"GinHello/initRouter"
+	"github.com/gin-gonic/gin"
 )
 
 // @title Gin swagger
@@ -19,6 +20,7 @@ import (
 // @host localhost:8080
 // 主服务启动
 func main() {
+	gin.SetMode(gin.ReleaseMode)
 	router := initRouter.SetupRouter()
 	router.Run()
 }
